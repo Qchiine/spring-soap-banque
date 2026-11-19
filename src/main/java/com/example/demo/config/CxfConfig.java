@@ -1,0 +1,27 @@
+package com.example.demo.config;
+
+import org.apache.cxf.Bus;
+import org.apache.cxf.jaxws.EndpointImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.example.demo.ws.CompteSoapService;
+
+@Configuration
+public class CxfConfig {
+
+    private final CompteSoapService compteSoapService;
+    private final Bus bus;
+
+    public CxfConfig(CompteSoapService compteSoapService, Bus bus) {
+        this.compteSoapService = compteSoapService;
+        this.bus = bus;
+    }
+
+    @Bean
+    public EndpointImpl endpoint() {
+        EndpointImpl endpoint = new EndpointImpl(bus, compteSoapService);
+        endpoint.publish("/ws");
+        return endpoint;
+    }
+}
